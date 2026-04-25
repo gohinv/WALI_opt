@@ -149,6 +149,7 @@ long __walirt_mmap(void *addr, unsigned int len, int prot, int flags,
                    int fd, long long offset)
 {
     long ret = __engine_mmap((void *)(uintptr_t)addr, len, prot, flags, fd, offset);
+    printf("triggered rt mmap");
 
     // ignore caller address hint
     // (void)addr;

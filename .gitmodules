@@ -1,10 +1,11 @@
 [submodule "wali-musl"]
 	path = wali-musl
 	url = https://github.com/tkhdse/wali-musl.git
+	branch = wali-opt
 [submodule "wasm-micro-runtime"]
 	path = wasm-micro-runtime
 	url = https://github.com/tkhdse/wasm-micro-runtime.git
-	branch = wali
+	branch = wali-opt
 [submodule "llvm-project"]
 	path = llvm-project
 	url = https://github.com/llvm/llvm-project.git
