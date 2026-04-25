@@ -32,10 +32,10 @@ int test_cleanup(int argc, char **argv) {
 #endif
 
 #ifdef __wasm__
-__attribute__((__import_module__("wali"), __import_name__("SYS_mmap")))
-long long __imported_wali_mmap(void *addr, size_t length, int prot, int flags, int fd, long long offset);
-__attribute__((__import_module__("wali"), __import_name__("SYS_munmap")))
-long long __imported_wali_munmap(void *addr, size_t length);
+// __attribute__((__import_module__("wali"), __import_name__("SYS_mmap_raw")))
+// long long __imported_wali_mmap(void *addr, size_t length, int prot, int flags, int fd, long long offset);
+// __attribute__((__import_module__("wali"), __import_name__("SYS_munmap_raw")))
+// long long __imported_wali_munmap(void *addr, size_t length);
 // Use long for open/close to match other files and likely runtime signature (i32)
 __attribute__((__import_module__("wali"), __import_name__("SYS_open")))
 long __imported_wali_open(const char *pathname, int flags, int mode);
@@ -46,7 +46,9 @@ int wali_open(const char *pathname, int flags, int mode) { return (int)__importe
 int wali_close(int fd) { return (int)__imported_wali_close(fd); }
 
 void *wali_mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset) {
-  long long res = __imported_wali_mmap(addr, length, prot, flags, fd, (long long)offset);
+  printf("wasm enabled\n");
+  // long long res = __imported_wali_mmap(addr, length, prot, flags, fd, (long long)offset);
+  long long res = mmap(addr, length, prot, flags, fd, (long long)offset);
   // Check for error (negative) - but in Wasm addresses are u32. 
   // However, syscall returns s64? If it's a pointer, it usually returns i32 on wasm32?
   // WIT says `ptr-void` -> `s64` (syscall-result).
@@ -60,7 +62,8 @@ void *wali_mmap(void *addr, size_t length, int prot, int flags, int fd, off_t of
   return (void *)(long)res;
 }
 int wali_munmap(void *addr, size_t length) {
-  return (int)__imported_wali_munmap(addr, length);
+  return (int)munmap(addr, length);
+  // return (int)__imported_wali_munmap(addr, length);
 }
 #else
 #include <sys/syscall.h>
@@ -76,9 +79,10 @@ int wali_close(int fd) { return syscall(SYS_close, fd); }
 
 int test(void) {
   if (test_init_args() != 0) return -1;
-  const char *mode = (argc > 0) ? argv[0] : "fail";
+  const char *mode = (argc > 1) ? argv[1] : "fail";
   
   if (strcmp(mode, "anon") == 0) {
+      // printf("run test\n");
       size_t size = 4096;
       void *ptr = wali_mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
       
