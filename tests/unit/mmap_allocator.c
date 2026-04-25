@@ -58,8 +58,8 @@ static int test_grow(void) {
 
 int test(void) {
     if (test_init_args() != 0) return -1;
-    const char *mode = (argc > 0) ? argv[0] : "basic";
-
+    const char *mode = (argc > 1) ? argv[1] : "basic";
+    
     if (strcmp(mode, "basic") == 0) return test_basic();
     if (strcmp(mode, "reuse") == 0) return test_reuse();
     if (strcmp(mode, "grow") == 0) return test_grow();
