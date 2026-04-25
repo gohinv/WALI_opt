@@ -32,14 +32,14 @@ int32_t __walirt_wasm_memory_size(void);
 /*   SYS_mremap — requires MREMAP_FIXED                                */
 /*  ------------------------------------------------------------------  */
 
-__attribute__((__import_module__("wali"), __import_name__("SYS_mmap")))
+__attribute__((__import_module__("wali"), __import_name__("SYS_mmap_raw")))
 long __engine_mmap(void *addr, unsigned int len, int prot, int flags,
                    int fd, long long offset);
 
-__attribute__((__import_module__("wali"), __import_name__("SYS_munmap")))
+__attribute__((__import_module__("wali"), __import_name__("SYS_munmap_raw")))
 long __engine_munmap(void *addr, unsigned int len);
 
-__attribute__((__import_module__("wali"), __import_name__("SYS_mremap")))
+__attribute__((__import_module__("wali"), __import_name__("SYS_mremap_raw")))
 long __engine_mremap(void *old_addr, unsigned int old_len,
                      unsigned int new_len, int flags, void *new_addr);
 
@@ -148,114 +148,132 @@ __attribute__((__export_name__("SYS_mmap")))
 long __walirt_mmap(void *addr, unsigned int len, int prot, int flags,
                    int fd, long long offset)
 {
+    long ret = __engine_mmap((void *)(uintptr_t)addr, len, prot, flags, fd, offset);
+
     // ignore caller address hint
-    (void)addr;
+    // (void)addr;
 
-    static uint32_t native_page_size = 0;
+    // static uint32_t native_page_size = 0;
 
-    uint32_t page_sz = native_page_size;
+    // uint32_t page_sz = native_page_size;
 
-    // compute placeholder while native_page_size is not yet known
-    uint32_t alloc_len;
-    if (page_sz == 0) {
-        alloc_len = 0;
-    } else {
-        alloc_len = (((uint32_t)len) + page_sz - 1u) & ~(page_sz - 1u);
-        if (alloc_len == 0)
-            alloc_len = page_sz;
-    }
+    // // compute placeholder while native_page_size is not yet known
+    // uint32_t alloc_len;
+    // if (page_sz == 0) {
+    //     alloc_len = 0;
+    // } else {
+    //     alloc_len = (((uint32_t)len) + page_sz - 1u) & ~(page_sz - 1u);
+    //     if (alloc_len == 0)
+    //         alloc_len = page_sz;
+    // }
 
-    pthread_mutex_lock(&alloc_lock);
+    // pthread_mutex_lock(&alloc_lock);
 
-    if (!native_page_size) {
-        long ps = sysconf(_SC_PAGE_SIZE);
-        native_page_size = (ps > 0) ? (uint32_t)ps : NATIVE_PAGE_SIZE_FALLBACK;
-        page_sz = native_page_size;
-    }
+    // if (!native_page_size) {
+    //     long ps = sysconf(_SC_PAGE_SIZE);
+    //     native_page_size = (ps > 0) ? (uint32_t)ps : NATIVE_PAGE_SIZE_FALLBACK;
+    //     page_sz = native_page_size;
+    // }
 
-    /* Recompute alloc_len now that page_sz is guaranteed non-zero. */
-    alloc_len = (((uint32_t)len) + page_sz - 1u) & ~(page_sz - 1u);
-    if (alloc_len == 0)
-        alloc_len = page_sz;
+    // /* Recompute alloc_len now that page_sz is guaranteed non-zero. */
+    // alloc_len = (((uint32_t)len) + page_sz - 1u) & ~(page_sz - 1u);
+    // if (alloc_len == 0)
+    //     alloc_len = page_sz;
 
-    if (!arena_initialised) {
-        int32_t cur_pages = __walirt_wasm_memory_size();
-        arena_top = (uint32_t)cur_pages * WASM_PAGE_SIZE;
-        arena_initialised = 1;
-    }
+    // if (!arena_initialised) {
+    //     int32_t cur_pages = __walirt_wasm_memory_size();
+    //     arena_top = (uint32_t)cur_pages * WASM_PAGE_SIZE;
+    //     arena_initialised = 1;
+    // }
 
 
-    // first-fit search through the free list
-    uint32_t chosen_addr  = 0;
-    int      from_freelist = 0;
+    // // first-fit search through the free list
+    // uint32_t chosen_addr  = 0;
+    // int      from_freelist = 0;
 
-    free_node_t *prev = NULL;
-    free_node_t *cur  = free_list;
-    while (cur) {
-        if (cur->size >= alloc_len) {
-            chosen_addr   = cur->offset;
-            from_freelist = 1;
+    // free_node_t *prev = NULL;
+    // free_node_t *cur  = free_list;
+    // while (cur) {
+    //     if (cur->size >= alloc_len) {
+    //         chosen_addr   = cur->offset;
+    //         from_freelist = 1;
 
-            uint32_t remainder = cur->size - alloc_len;
-            if (remainder > 0) {
-                // split the segment if it is larger than the allocation
-                cur->offset += alloc_len;
-                cur->size    = remainder;
-            } else {
-                // perfect fit: unlink and recycle the node
-                if (prev)
-                    prev->next = cur->next;
-                else
-                    free_list = cur->next;
-                pool_free(cur);
-            }
-            break;
-        }
-        prev = cur;
-        cur  = cur->next;
-    }
+    //         uint32_t remainder = cur->size - alloc_len;
+    //         if (remainder > 0) {
+    //             // split the segment if it is larger than the allocation
+    //             cur->offset += alloc_len;
+    //             cur->size    = remainder;
+    //         } else {
+    //             // perfect fit: unlink and recycle the node
+    //             if (prev)
+    //                 prev->next = cur->next;
+    //             else
+    //                 free_list = cur->next;
+    //             pool_free(cur);
+    //         }
+    //         break;
+    //     }
+    //     prev = cur;
+    //     cur  = cur->next;
+    // }
 
-    // no free segment found: extend the arena
-    if (!from_freelist) {
-        uint32_t base = arena_top;
-        uint32_t wasm_pages =
-            (alloc_len + WASM_PAGE_SIZE - 1u) / WASM_PAGE_SIZE;
+    // // no free segment found: extend the arena
+    // if (!from_freelist) {
+    //     uint32_t base = arena_top;
+    //     uint32_t wasm_pages =
+    //         (alloc_len + WASM_PAGE_SIZE - 1u) / WASM_PAGE_SIZE;
 
-        int32_t grow_ret = __walirt_wasm_memory_grow((int32_t)wasm_pages);
-        if (grow_ret < 0) {
-            // memory.grow failed: Wasm address space exhausted
-            pthread_mutex_unlock(&alloc_lock);
-            errno = ENOMEM;
-            return (long)MAP_FAILED;
-        }
+    //     int32_t grow_ret = __walirt_wasm_memory_grow((int32_t)wasm_pages);
+    //     if (grow_ret < 0) {
+    //         // memory.grow failed: Wasm address space exhausted
+    //         pthread_mutex_unlock(&alloc_lock);
+    //         errno = ENOMEM;
+    //         return (long)MAP_FAILED;
+    //     }
 
-        arena_top   = base + wasm_pages * WASM_PAGE_SIZE;
-        chosen_addr = base;
-    }
+    //     arena_top   = base + wasm_pages * WASM_PAGE_SIZE;
+    //     chosen_addr = base;
+    // }
 
-    pthread_mutex_unlock(&alloc_lock);
+    // pthread_mutex_unlock(&alloc_lock);
 
     // ask the engine to place the kernel mapping
-    long ret = __engine_mmap((void *)(uintptr_t)chosen_addr,
-                             alloc_len, prot,
-                             MAP_FIXED | flags,
-                             fd, offset);
+    // long ret = __engine_mmap((void *)(uintptr_t)chosen_addr,
+    //                          alloc_len, prot,
+    //                          MAP_FIXED | flags,
+    //                          fd, offset);
 
-    if (ret == (long)MAP_FAILED) {
-        pthread_mutex_lock(&alloc_lock);
-        free_node_t *node = pool_alloc();
-        if (node) {
-            node->offset = chosen_addr;
-            node->size   = alloc_len;
-            node->next   = free_list;
-            free_list    = node;
-        }
+    // if (ret == (long)MAP_FAILED) {
+    //     pthread_mutex_lock(&alloc_lock);
+    //     free_node_t *node = pool_alloc();
+    //     if (node) {
+    //         node->offset = chosen_addr;
+    //         node->size   = alloc_len;
+    //         node->next   = free_list;
+    //         free_list    = node;
+    //     }
 
-        pthread_mutex_unlock(&alloc_lock);
+    //     pthread_mutex_unlock(&alloc_lock);
 
-        errno = ENOMEM;
-        return (long)MAP_FAILED;
-    }
+    //     errno = ENOMEM;
+    //     return (long)MAP_FAILED;
+    // }
 
+    return ret;
+}
+
+
+
+
+__attribute__((__export_name__("SYS_munmap")))
+long __walirt_munmap(void *addr, unsigned int len) {
+    long ret = __engine_munmap(addr, len);
+    return ret;
+}
+
+
+__attribute__((__export_name__("SYS_mremap")))
+long __walirt_mremap(void *old_addr, unsigned int old_len, unsigned int new_len, int flags, void *new_addr) {
+    long ret = __engine_mremap(old_addr, old_len, new_len, flags, new_addr);
     return ret;
 }
