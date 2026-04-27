@@ -415,3 +415,73 @@ long __walirt_mremap(void *old_addr, unsigned int old_len, unsigned int new_len,
         return (long)chosen_addr;
     }
 }
+
+
+/* ------------------------------------------------------------------ */
+/* Fragmentation introspection — exported for benchmarks               */
+/* ------------------------------------------------------------------ */
+
+/* Total bytes in free-list holes */
+__attribute__((__export_name__("__walirt_frag_free_bytes")))
+uint32_t __walirt_frag_free_bytes(void)
+{
+    uint32_t total = 0;
+    for (free_node_t *n = free_list; n; n = n->next)
+        total += n->size;
+    return total;
+}
+
+/* Number of discrete holes in the free list */
+__attribute__((__export_name__("__walirt_frag_hole_count")))
+uint32_t __walirt_frag_hole_count(void)
+{
+    uint32_t count = 0;
+    for (free_node_t *n = free_list; n; n = n->next)
+        count++;
+    return count;
+}
+
+/* Size of the largest single free hole (0 if none) */
+__attribute__((__export_name__("__walirt_frag_largest_hole")))
+uint32_t __walirt_frag_largest_hole(void)
+{
+    uint32_t max_sz = 0;
+    for (free_node_t *n = free_list; n; n = n->next)
+        if (n->size > max_sz) max_sz = n->size;
+    return max_sz;
+}
+
+/* Current arena high-water mark (bytes) */
+__attribute__((__export_name__("__walirt_frag_arena_top")))
+uint32_t __walirt_frag_arena_top(void)
+{
+    return arena_top;
+}
+
+/* Number of pool slots currently in use */
+__attribute__((__export_name__("__walirt_frag_pool_used")))
+uint32_t __walirt_frag_pool_used(void)
+{
+    uint32_t used = 0;
+    for (int i = 0; i < FREE_POOL_SIZE; i++)
+        if (node_pool_used[i]) used++;
+    return used;
+}
+
+/*
+ * Snapshot all stats into a caller-supplied buffer (5 x uint32_t).
+ * Layout: [free_bytes, hole_count, largest_hole, arena_top, pool_used]
+ * Returns 0 on success.
+ */
+__attribute__((__export_name__("__walirt_frag_snapshot")))
+int __walirt_frag_snapshot(uint32_t *buf)
+{
+    if (!buf) return -1;
+    buf[0] = __walirt_frag_free_bytes();
+    buf[1] = __walirt_frag_hole_count();
+    buf[2] = __walirt_frag_largest_hole();
+    buf[3] = arena_top;
+    buf[4] = __walirt_frag_pool_used();
+    return 0;
+}
+
