@@ -1,5 +1,9 @@
 # Benchmarks for WALIopt
 
+
+
+
+## Performance 
 Here, we profile the performance of the `mmap`, `munmap`, and `mremap` system calls within WALI and WALIopt.
 In WALI, these system calls are linked and implemented in the engine, which contains logic for the simple memory allocator.
 
@@ -11,8 +15,12 @@ We are interested in benchmarking the overall performance between both. The benc
 cd benchmarks
 
 # compile mmap_bench.c to mmap_bench.wasm
-../examples/compile-wali-standalone.sh -o mmap_bench.wasm mmap_bench.c
+# we have provided options for INPUT_C_FILE under workloads/
+../examples/compile-wali-standalone.sh -o mmap_bench.wasm INPUT_C_FILE
 
 # run shell script to gather metrics into mmap_results.csv
 IWASM=../iwasm WALI_ENV_FILE=/tmp/wali.env ./run_mmap_bench.sh ./mmap_bench.wasm > out.csv
 ```
+
+
+## Fragmentation

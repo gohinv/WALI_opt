@@ -1,0 +1,35 @@
+mode,exit_code
+FRAG,churn,1,wasm_bytes=2555904,live=2359296,wasted=196608,frag=0.0769,peak_live=2359296,mmap_calls=128,munmap_calls=0,live_count=128
+FRAG,churn,2,wasm_bytes=2555904,live=1310720,wasted=1245184,frag=0.4872,peak_live=2359296,mmap_calls=128,munmap_calls=64,live_count=64
+FRAG,churn,3,wasm_bytes=3604480,live=2359296,wasted=1245184,frag=0.3455,peak_live=2359296,mmap_calls=192,munmap_calls=64,live_count=128
+FRAG,churn,4,wasm_bytes=3604480,live=0,wasted=3604480,frag=1.0000,peak_live=2359296,mmap_calls=192,munmap_calls=192,live_count=0
+[03:09:19:515 - 7F02D4C85740]: [664168] WALI: WALI init env file: '/tmp/wali.env'
+churn,0
+FRAG,interleave,1,wasm_bytes=2555904,live=2359296,wasted=196608,frag=0.0769,peak_live=2359296,mmap_calls=128,munmap_calls=0,live_count=128
+FRAG,interleave,2,wasm_bytes=2555904,live=2097152,wasted=458752,frag=0.1795,peak_live=2359296,mmap_calls=128,munmap_calls=64,live_count=64
+FRAG,interleave,3,wasm_bytes=2621440,live=2162688,wasted=458752,frag=0.1750,peak_live=2359296,mmap_calls=129,munmap_calls=64,live_count=65
+FRAG,interleave,4,wasm_bytes=2621440,live=0,wasted=2621440,frag=1.0000,peak_live=2359296,mmap_calls=129,munmap_calls=129,live_count=0
+[03:09:19:581 - 7F0E29247740]: [664173] WALI: WALI init env file: '/tmp/wali.env'
+interleave,0
+FRAG,sawtooth,1,wasm_bytes=458752,live=262144,wasted=196608,frag=0.4286,peak_live=262144,mmap_calls=32,munmap_calls=0,live_count=32
+FRAG,sawtooth,2,wasm_bytes=458752,live=0,wasted=458752,frag=1.0000,peak_live=262144,mmap_calls=32,munmap_calls=32,live_count=0
+FRAG,sawtooth,3,wasm_bytes=720896,live=262144,wasted=458752,frag=0.6364,peak_live=262144,mmap_calls=64,munmap_calls=32,live_count=32
+FRAG,sawtooth,4,wasm_bytes=720896,live=0,wasted=720896,frag=1.0000,peak_live=262144,mmap_calls=64,munmap_calls=64,live_count=0
+FRAG,sawtooth,5,wasm_bytes=917504,live=262144,wasted=655360,frag=0.7143,peak_live=262144,mmap_calls=96,munmap_calls=64,live_count=32
+FRAG,sawtooth,6,wasm_bytes=917504,live=0,wasted=917504,frag=1.0000,peak_live=262144,mmap_calls=96,munmap_calls=96,live_count=0
+FRAG,sawtooth,7,wasm_bytes=1179648,live=262144,wasted=917504,frag=0.7778,peak_live=262144,mmap_calls=128,munmap_calls=96,live_count=32
+FRAG,sawtooth,8,wasm_bytes=1179648,live=0,wasted=1179648,frag=1.0000,peak_live=262144,mmap_calls=128,munmap_calls=128,live_count=0
+FRAG,sawtooth,9,wasm_bytes=1441792,live=262144,wasted=1179648,frag=0.8182,peak_live=262144,mmap_calls=160,munmap_calls=128,live_count=32
+FRAG,sawtooth,10,wasm_bytes=1441792,live=0,wasted=1441792,frag=1.0000,peak_live=262144,mmap_calls=160,munmap_calls=160,live_count=0
+FRAG,sawtooth,11,wasm_bytes=1703936,live=262144,wasted=1441792,frag=0.8462,peak_live=262144,mmap_calls=192,munmap_calls=160,live_count=32
+FRAG,sawtooth,12,wasm_bytes=1703936,live=0,wasted=1703936,frag=1.0000,peak_live=262144,mmap_calls=192,munmap_calls=192,live_count=0
+FRAG,sawtooth,13,wasm_bytes=1966080,live=262144,wasted=1703936,frag=0.8667,peak_live=262144,mmap_calls=224,munmap_calls=192,live_count=32
+FRAG,sawtooth,14,wasm_bytes=1966080,live=0,wasted=1966080,frag=1.0000,peak_live=262144,mmap_calls=224,munmap_calls=224,live_count=0
+FRAG,sawtooth,15,wasm_bytes=2228224,live=262144,wasted=1966080,frag=0.8824,peak_live=262144,mmap_calls=256,munmap_calls=224,live_count=32
+FRAG,sawtooth,16,wasm_bytes=2228224,live=0,wasted=2228224,frag=1.0000,peak_live=262144,mmap_calls=256,munmap_calls=256,live_count=0
+FRAG,sawtooth,17,wasm_bytes=2490368,live=262144,wasted=2228224,frag=0.8947,peak_live=262144,mmap_calls=288,munmap_calls=256,live_count=32
+FRAG,sawtooth,18,wasm_bytes=2490368,live=0,wasted=2490368,frag=1.0000,peak_live=262144,mmap_calls=288,munmap_calls=288,live_count=0
+FRAG,sawtooth,19,wasm_bytes=2752512,live=262144,wasted=2490368,frag=0.9048,peak_live=262144,mmap_calls=320,munmap_calls=288,live_count=32
+FRAG,sawtooth,20,wasm_bytes=2752512,live=0,wasted=2752512,frag=1.0000,peak_live=262144,mmap_calls=320,munmap_calls=320,live_count=0
+[03:09:19:910 - 7F5DEDF48740]: [664175] WALI: WALI init env file: '/tmp/wali.env'
+sawtooth,0
