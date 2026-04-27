@@ -19,8 +19,16 @@ cd benchmarks
 ../examples/compile-wali-standalone.sh -o mmap_bench.wasm INPUT_C_FILE
 
 # run shell script to gather metrics into mmap_results.csv
-IWASM=../iwasm WALI_ENV_FILE=/tmp/wali.env ./run_mmap_bench.sh ./mmap_bench.wasm > out.csv
+IWASM=../iwasm WALI_ENV_FILE=/tmp/wali.env ./run_mmap_bench_perf.sh ./mmap_bench.wasm > out.csv
 ```
 
 
 ## Fragmentation
+```
+# compile mmap_frag_bench.c into .wasm
+../examples/compile-wali-standalone.sh -o wasm_artifacts/mmap_frag_bench.wasm workloads/mmap_frag_bench.c
+
+# run shell script to gather fragmentation details (fed into frag_results.txt)
+IWASM=../iwasm WALI_ENV_FILE=/tmp/wali.env ./run_mmap_bench_frag.sh ./wasm_artifacts/mmap_frag_bench.wasm | tee
+
+```
