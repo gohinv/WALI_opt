@@ -77,7 +77,7 @@ static int test_interleave(void)
 
 static int test_sawtooth(void)
 {
-    for (int cycle = 0; cycle < 10; cycle++) {
+    for (int cycle = 0; cycle < 40; cycle++) {
         void *ptrs[32];
         size_t sz = 8192;
         for (int i = 0; i < 32; i++) {
