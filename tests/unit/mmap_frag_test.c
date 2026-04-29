@@ -21,6 +21,8 @@ static void print_frag_stats(const char *label, int step)
 {
     printf("FRAG,%s,%d,", label, step);
 #ifdef __wasm__
+    uint32_t wasm_pages = (uint32_t)__builtin_wasm_memory_size(0);
+    uint32_t wasm_bytes = wasm_pages * 65536u;
     if (__walirt_frag_free_bytes) {
         uint32_t arena   = __walirt_frag_arena_top();
         uint32_t free_b  = __walirt_frag_free_bytes();
@@ -28,8 +30,10 @@ static void print_frag_stats(const char *label, int step)
         uint32_t largest = __walirt_frag_largest_hole();
         uint32_t pool    = __walirt_frag_pool_used();
         float frag_ratio = arena > 0 ? (float)free_b / arena : 0.0f;
-        printf("arena=%u,free=%u,holes=%u,largest=%u,pool=%u,frag=%.4f",
-               arena, free_b, holes, largest, pool, frag_ratio);
+        printf("wasm_bytes=%u,arena=%u,free=%u,holes=%u,largest=%u,pool=%u,frag=%.4f",
+               wasm_bytes, arena, free_b, holes, largest, pool, frag_ratio);
+    } else {
+        printf("wasm_bytes=%u", wasm_bytes);
     }
 #else
     printf("native");
@@ -124,7 +128,7 @@ static int test_interleave(void)
  */
 static int test_sawtooth(void)
 {
-    for (int cycle = 0; cycle < 10; cycle++) {
+    for (int cycle = 0; cycle < 40; cycle++) {
         void *ptrs[32];
         size_t sz = 8192;
         for (int i = 0; i < 32; i++) {
