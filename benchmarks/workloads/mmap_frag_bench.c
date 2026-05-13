@@ -1,3 +1,8 @@
+#include "../common/wali_mmap_wrap.h"
+#define MMAP_TRACKER_MMAP(addr, len, prot, flags, fd, off) \
+    wali_bench_mmap((addr), (len), (prot), (flags), (fd), (off))
+#define MMAP_TRACKER_MUNMAP(addr, len) wali_bench_munmap((addr), (len))
+
 #include "../common/mmap_tracker.h"
 #include <stdio.h>
 #include <string.h>

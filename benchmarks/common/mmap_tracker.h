@@ -20,6 +20,14 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#ifndef MMAP_TRACKER_MMAP
+#define MMAP_TRACKER_MMAP(addr, len, prot, flags, fd, off) \
+    mmap((addr), (len), (prot), (flags), (fd), (off))
+#endif
+#ifndef MMAP_TRACKER_MUNMAP
+#define MMAP_TRACKER_MUNMAP(addr, len) munmap((addr), (len))
+#endif
+
 #define MT_MAX_LIVE  1024   /* max simultaneously live mappings */
 
 typedef struct {
