@@ -1,49 +1,49 @@
 # variant=WALI_opt iwasm=../iwasm
 ## perf (run_mmap_bench_perf loads)
 WALI_opt,perf,load_id,maps,map_size,round,total_ns,avg_ns_per_map
-WALI_opt,perf,0,100,4096,0,3009171,30091.71
-WALI_opt,perf,0,100,4096,1,3008929,30089.29
-WALI_opt,perf,0,100,4096,2,2184190,21841.90
-WALI_opt,perf,0,100,4096,3,2189985,21899.85
-WALI_opt,perf,0,100,4096,4,2183033,21830.33
-WALI_opt,perf,1,500,4096,0,11971393,23942.79
-WALI_opt,perf,1,500,4096,1,11160529,22321.06
-WALI_opt,perf,1,500,4096,2,11267319,22534.64
-WALI_opt,perf,1,500,4096,3,10903714,21807.43
-WALI_opt,perf,1,500,4096,4,10798570,21597.14
-WALI_opt,perf,2,1000,4096,0,23710990,23710.99
-WALI_opt,perf,2,1000,4096,1,22241158,22241.16
-WALI_opt,perf,2,1000,4096,2,22230068,22230.07
-WALI_opt,perf,2,1000,4096,3,39507176,39507.18
-WALI_opt,perf,2,1000,4096,4,37055798,37055.80
-WALI_opt,perf,3,200,65536,0,15805048,79025.24
-WALI_opt,perf,3,200,65536,1,14926407,74632.04
-WALI_opt,perf,3,200,65536,2,14842768,74213.84
-WALI_opt,perf,3,200,65536,3,14772043,73860.21
-WALI_opt,perf,3,200,65536,4,14747051,73735.26
-WALI_opt,perf,4,500,65536,0,39735968,79471.94
-WALI_opt,perf,4,500,65536,1,36962590,73925.18
-WALI_opt,perf,4,500,65536,2,36956176,73912.35
-WALI_opt,perf,4,500,65536,3,36946839,73893.68
-WALI_opt,perf,4,500,65536,4,36909773,73819.55
-WALI_opt,perf,5,100,1048576,0,85294151,852941.51
-WALI_opt,perf,5,100,1048576,1,82893971,828939.71
-WALI_opt,perf,5,100,1048576,2,82841304,828413.04
-WALI_opt,perf,5,100,1048576,3,82997369,829973.69
-WALI_opt,perf,5,100,1048576,4,82894882,828948.82
+WALI_opt,perf,0,100,4096,0,3228965,32289.65
+WALI_opt,perf,0,100,4096,1,2877999,28779.99
+WALI_opt,perf,0,100,4096,2,2871825,28718.25
+WALI_opt,perf,0,100,4096,3,2262157,22621.57
+WALI_opt,perf,0,100,4096,4,2220962,22209.62
+WALI_opt,perf,1,500,4096,0,13072805,26145.61
+WALI_opt,perf,1,500,4096,1,10993504,21987.01
+WALI_opt,perf,1,500,4096,2,11181943,22363.89
+WALI_opt,perf,1,500,4096,3,10925361,21850.72
+WALI_opt,perf,1,500,4096,4,11016064,22032.13
+WALI_opt,perf,2,1000,4096,0,24268101,24268.10
+WALI_opt,perf,2,1000,4096,1,22251894,22251.89
+WALI_opt,perf,2,1000,4096,2,22161884,22161.88
+WALI_opt,perf,2,1000,4096,3,21976420,21976.42
+WALI_opt,perf,2,1000,4096,4,21948782,21948.78
+WALI_opt,perf,3,200,65536,0,17265822,86329.11
+WALI_opt,perf,3,200,65536,1,14972782,74863.91
+WALI_opt,perf,3,200,65536,2,14848089,74240.45
+WALI_opt,perf,3,200,65536,3,14841674,74208.37
+WALI_opt,perf,3,200,65536,4,14854825,74274.12
+WALI_opt,perf,4,500,65536,0,39669391,79338.78
+WALI_opt,perf,4,500,65536,1,37390960,74781.92
+WALI_opt,perf,4,500,65536,2,37344906,74689.81
+WALI_opt,perf,4,500,65536,3,37334275,74668.55
+WALI_opt,perf,4,500,65536,4,37406543,74813.09
+WALI_opt,perf,5,100,1048576,0,85034895,850348.95
+WALI_opt,perf,5,100,1048576,1,81721111,817211.11
+WALI_opt,perf,5,100,1048576,2,81597857,815978.57
+WALI_opt,perf,5,100,1048576,3,81575202,815752.02
+WALI_opt,perf,5,100,1048576,4,81801608,818016.08
 ## frag
 WALI_opt,frag,mode,exit_code
 WALI_opt,frag,FRAG,churn,1,wasm_bytes=8650752,live=2359296,wasted=6291456,frag=0.7273,peak_live=2359296,mmap_calls=128,munmap_calls=0,live_count=128
 WALI_opt,frag,FRAG,churn,2,wasm_bytes=8650752,live=1310720,wasted=7340032,frag=0.8485,peak_live=2359296,mmap_calls=128,munmap_calls=64,live_count=64
 WALI_opt,frag,FRAG,churn,3,wasm_bytes=8650752,live=2359296,wasted=6291456,frag=0.7273,peak_live=2359296,mmap_calls=192,munmap_calls=64,live_count=128
 WALI_opt,frag,FRAG,churn,4,wasm_bytes=8650752,live=0,wasted=8650752,frag=1.0000,peak_live=2359296,mmap_calls=192,munmap_calls=192,live_count=0
-WALI_opt,frag,[19:41:48:205 - 70D222E24740]: [368049] WALI: WALI init env file: '/tmp/wali.env'
+WALI_opt,frag,[19:52:35:745 - 71052ACF6740]: [377749] WALI: WALI init env file: '/tmp/wali.env'
 WALI_opt,frag,churn,0
 WALI_opt,frag,FRAG,interleave,1,wasm_bytes=8650752,live=2359296,wasted=6291456,frag=0.7273,peak_live=2359296,mmap_calls=128,munmap_calls=0,live_count=128
 WALI_opt,frag,FRAG,interleave,2,wasm_bytes=8650752,live=2097152,wasted=6553600,frag=0.7576,peak_live=2359296,mmap_calls=128,munmap_calls=64,live_count=64
 WALI_opt,frag,FRAG,interleave,3,wasm_bytes=8716288,live=2162688,wasted=6553600,frag=0.7519,peak_live=2359296,mmap_calls=129,munmap_calls=64,live_count=65
 WALI_opt,frag,FRAG,interleave,4,wasm_bytes=8716288,live=0,wasted=8716288,frag=1.0000,peak_live=2359296,mmap_calls=129,munmap_calls=129,live_count=0
-WALI_opt,frag,[19:41:48:964 - 7F5FC4064740]: [368071] WALI: WALI init env file: '/tmp/wali.env'
+WALI_opt,frag,[19:52:35:645 - 7E47FC591740]: [377751] WALI: WALI init env file: '/tmp/wali.env'
 WALI_opt,frag,interleave,0
 WALI_opt,frag,FRAG,sawtooth,1,wasm_bytes=2359296,live=262144,wasted=2097152,frag=0.8889,peak_live=262144,mmap_calls=32,munmap_calls=0,live_count=32
 WALI_opt,frag,FRAG,sawtooth,2,wasm_bytes=2359296,live=0,wasted=2359296,frag=1.0000,peak_live=262144,mmap_calls=32,munmap_calls=32,live_count=0
@@ -125,40 +125,40 @@ WALI_opt,frag,FRAG,sawtooth,77,wasm_bytes=2359296,live=262144,wasted=2097152,fra
 WALI_opt,frag,FRAG,sawtooth,78,wasm_bytes=2359296,live=0,wasted=2359296,frag=1.0000,peak_live=262144,mmap_calls=1248,munmap_calls=1248,live_count=0
 WALI_opt,frag,FRAG,sawtooth,79,wasm_bytes=2359296,live=262144,wasted=2097152,frag=0.8889,peak_live=262144,mmap_calls=1280,munmap_calls=1248,live_count=32
 WALI_opt,frag,FRAG,sawtooth,80,wasm_bytes=2359296,live=0,wasted=2359296,frag=1.0000,peak_live=262144,mmap_calls=1280,munmap_calls=1280,live_count=0
-WALI_opt,frag,[19:41:48:244 - 7B7F9E7AA740]: [368081] WALI: WALI init env file: '/tmp/wali.env'
+WALI_opt,frag,[19:52:35:255 - 77CDA8DB6740]: [377753] WALI: WALI init env file: '/tmp/wali.env'
 WALI_opt,frag,sawtooth,0
 WALI_opt,suite,--- roundtrip 200 65536 3 ---
 WALI_opt,suite,bench,round,maps,map_size,total_ns,avg_ns_per_map
-WALI_opt,suite,roundtrip,0,200,65536,17005246,85026.23
-WALI_opt,suite,roundtrip,1,200,65536,15089605,75448.02
-WALI_opt,suite,roundtrip,2,200,65536,15035290,75176.45
-WALI_opt,suite,[19:41:48:310 - 7C3327B61740]: [368113] WALI: WALI init env file: '/tmp/wali.env'
+WALI_opt,suite,roundtrip,0,200,65536,16818263,84091.32
+WALI_opt,suite,roundtrip,1,200,65536,15097456,75487.28
+WALI_opt,suite,roundtrip,2,200,65536,15060559,75302.79
+WALI_opt,suite,[19:52:36:155 - 7B1E5532C740]: [377754] WALI: WALI init env file: '/tmp/wali.env'
 WALI_opt,suite,
 WALI_opt,suite,--- sizesweep 100 3 ---
 WALI_opt,suite,bench,size_bytes,round,maps,total_ns,avg_ns_per_map
-WALI_opt,suite,sizesweep,4096,0,100,3840430,38404.30
-WALI_opt,suite,sizesweep,4096,1,100,2611593,26115.93
-WALI_opt,suite,sizesweep,4096,2,100,2632191,26321.91
-WALI_opt,suite,sizesweep,16384,0,100,3604292,36042.92
-WALI_opt,suite,sizesweep,16384,1,100,3243575,32435.75
-WALI_opt,suite,sizesweep,16384,2,100,3176122,31761.22
-WALI_opt,suite,sizesweep,65536,0,100,7578604,75786.04
-WALI_opt,suite,sizesweep,65536,1,100,7557003,75570.03
-WALI_opt,suite,sizesweep,65536,2,100,7522420,75224.20
-WALI_opt,suite,sizesweep,262144,0,100,22269945,222699.45
-WALI_opt,suite,sizesweep,262144,1,100,22001032,220010.32
-WALI_opt,suite,sizesweep,262144,2,100,21973670,219736.70
-WALI_opt,suite,sizesweep,1048576,0,100,82762304,827623.04
-WALI_opt,suite,sizesweep,1048576,1,100,82446905,824469.05
-WALI_opt,suite,sizesweep,1048576,2,100,82379280,823792.80
-WALI_opt,suite,[19:41:48:441 - 78248848C740]: [368129] WALI: WALI init env file: '/tmp/wali.env'
+WALI_opt,suite,sizesweep,4096,0,100,3856403,38564.03
+WALI_opt,suite,sizesweep,4096,1,100,2598335,25983.35
+WALI_opt,suite,sizesweep,4096,2,100,2595917,25959.17
+WALI_opt,suite,sizesweep,16384,0,100,3629609,36296.09
+WALI_opt,suite,sizesweep,16384,1,100,3196451,31964.51
+WALI_opt,suite,sizesweep,16384,2,100,3155329,31553.29
+WALI_opt,suite,sizesweep,65536,0,100,7693899,76938.99
+WALI_opt,suite,sizesweep,65536,1,100,7537685,75376.85
+WALI_opt,suite,sizesweep,65536,2,100,7496692,74966.92
+WALI_opt,suite,sizesweep,262144,0,100,22405809,224058.09
+WALI_opt,suite,sizesweep,262144,1,100,22237726,222377.26
+WALI_opt,suite,sizesweep,262144,2,100,22256236,222562.36
+WALI_opt,suite,sizesweep,1048576,0,100,83535762,835357.62
+WALI_opt,suite,sizesweep,1048576,1,100,83344131,833441.31
+WALI_opt,suite,sizesweep,1048576,2,100,83489042,834890.42
+WALI_opt,suite,[19:52:36:840 - 76A697E94740]: [377758] WALI: WALI init env file: '/tmp/wali.env'
 WALI_opt,suite,
 WALI_opt,suite,--- many_live 256 ---
 WALI_opt,suite,bench,phase,count,note
 WALI_opt,suite,many_live,map_start,256,
-WALI_opt,suite,many_live,map_done,256,map_total_ns=6232234
-WALI_opt,suite,many_live,touch_done,256,touch_total_ns=12577466
-WALI_opt,suite,[19:41:48:757 - 7EB536191740]: [368151] WALI: WALI init env file: '/tmp/wali.env'
+WALI_opt,suite,many_live,map_done,256,map_total_ns=6002108
+WALI_opt,suite,many_live,touch_done,256,touch_total_ns=12739058
+WALI_opt,suite,[19:52:36:018 - 74AAAEFD8740]: [377841] WALI: WALI init env file: '/tmp/wali.env'
 WALI_opt,suite,
 WALI_opt,suite,
 WALI_opt,suite,#00: 0x1025 - bench_many_live
