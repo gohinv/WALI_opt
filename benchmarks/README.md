@@ -32,3 +32,16 @@ IWASM=../iwasm WALI_ENV_FILE=/tmp/wali.env ./run_mmap_bench_perf.sh ./mmap_bench
 IWASM=../iwasm WALI_ENV_FILE=/tmp/wali.env ./run_mmap_bench_frag.sh ./wasm_artifacts/mmap_frag_bench.wasm | tee
 
 ```
+
+## Report figures (Python)
+
+See [`report/README.md`](report/README.md). Summarize two captured logs (baseline vs optimized) into PDF/PNG plots and `summary_tables.csv`:
+
+```bash
+pip install -r report/requirements.txt
+python report/mmap_generate_figures.py \
+  --baseline results/wali_run.txt \
+  --optimized results/waliopt_run.txt \
+  --labels WALI WALI_opt \
+  --outdir figures
+```
