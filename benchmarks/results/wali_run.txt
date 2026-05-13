@@ -1,0 +1,3 @@
+# variant=WALI iwasm=../../WALI/iwasm_wali
+## perf (run_mmap_bench_perf loads)
+WALI,perf,load_id,maps,map_size,round,total_ns,avg_ns_per_map
