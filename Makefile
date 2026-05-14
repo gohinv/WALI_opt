@@ -27,6 +27,7 @@ WALI_WAMRC_BUILD_DIR := $(WALI_WAMR_BUILD_DIR)/wamrc
 
 .PHONY: default libc libcxx iwasm wali-compiler llvm-base tests clean clean-runtime clean-all clean-llvm wamrc
 .PHONY: rustc
+.PHONY: rebuild-rt rebuild-musl rebuild-engine check-allocator verify-wat
 
 default: iwasm
 
@@ -154,6 +155,78 @@ wali-compiler: llvm-base
 	mkdir -p $(dir $(WALI_LIBCLANG_RT_LIB))
 	cp $(WALI_ROOT_DIR)/toolchains/rt_builtins/llvm-$(WALI_LLVM_MAJOR_VERSION).libclang_rt.builtins-wasm32-wali.a $(WALI_LIBCLANG_RT_LIB)
 	
+
+# --- ALLOCATOR DEVELOPMENT REBUILD TARGETS --- #
+#
+# Use these to avoid stale-object issues when editing specific layers:
+#
+#   make rebuild-rt     — wali_mmap_alloc.c or wali_rt.c changed
+#   make rebuild-musl   — syscall_arch.h or musl syscall glue changed
+#   make rebuild-engine — wasm-micro-runtime/.../wali.c changed
+#   make check-allocator — verify WAT wiring and run the three sub-tests
+#   make verify-wat     — WAT-only check against existing build artifacts
+#
+# The convenience target in scripts/rebuild-mmap.sh accepts the same flags
+# (--rt, --musl, --engine, --all) and combines them with verify + test run.
+
+ALLOC_TEST_WASM := $(WALI_ROOT_DIR)/tests/bin/unit/wasm/mmap_allocator.wasm
+ALLOC_TEST_WAT  := $(WALI_ROOT_DIR)/tests/bin/unit/wasm/mmap_allocator.wat
+
+rebuild-rt:
+	(cd $(WALI_ROOT_DIR)/toolchains/rt_builtins && bash update.sh)
+	$(MAKE) -C $(WALI_ROOT_DIR) wali-compiler
+
+rebuild-musl:
+	$(MAKE) -C $(MUSL_SOURCE_DIR) clean
+	$(MAKE) -C $(WALI_ROOT_DIR) libc
+
+rebuild-engine:
+	$(MAKE) -C $(WALI_ROOT_DIR) iwasm
+
+verify-wat: $(ALLOC_TEST_WAT)
+	@echo "=== WAT symbol verification ==="
+	@fail=0; \
+	check_present() { \
+	    if grep -qF "$$1" $(ALLOC_TEST_WAT); then \
+	        echo "  [OK ] $$2"; \
+	    else \
+	        echo "  [FAIL] $$2  -- missing: $$1" >&2; fail=1; \
+	    fi; \
+	}; \
+	check_absent() { \
+	    if ! grep -qF "$$1" $(ALLOC_TEST_WAT); then \
+	        echo "  [OK ] $$2"; \
+	    else \
+	        echo "  [FAIL] $$2  -- unexpected: $$1" >&2; fail=1; \
+	    fi; \
+	}; \
+	check_present '(import "wali" "SYS_mmap_raw"'   "import wali.SYS_mmap_raw"; \
+	check_present '(import "wali" "SYS_munmap_raw"' "import wali.SYS_munmap_raw"; \
+	check_present '(import "wali" "SYS_mremap_raw"' "import wali.SYS_mremap_raw"; \
+	check_present '(export "SYS_mmap"'              "export SYS_mmap"; \
+	check_present '(export "SYS_munmap"'            "export SYS_munmap"; \
+	check_present '(export "SYS_mremap"'            "export SYS_mremap"; \
+	check_absent  '(import "wali" "SYS_mmap"'       "no direct import wali.SYS_mmap"; \
+	check_absent  '(import "wali" "SYS_munmap"'     "no direct import wali.SYS_munmap"; \
+	if [ $$fail -ne 0 ]; then \
+	    echo "WAT verification FAILED — rebuild with: make rebuild-rt rebuild-musl" >&2; \
+	    exit 1; \
+	fi; \
+	echo "=== WAT verification passed ==="
+
+check-allocator: verify-wat
+	@echo "=== Running mmap_allocator sub-tests ==="
+	@fail=0; \
+	for mode in basic reuse grow; do \
+	    printf "  %-8s " "$$mode:"; \
+	    if $(WALI_ROOT_DIR)/iwasm $(ALLOC_TEST_WASM) $$mode; then \
+	        echo "PASS"; \
+	    else \
+	        echo "FAIL" >&2; fail=1; \
+	    fi; \
+	done; \
+	if [ $$fail -ne 0 ]; then exit 1; fi; \
+	echo "=== All allocator tests passed ==="
 
 # --- COMPILER PORTS --- #
 .ONESHELL:
